@@ -1,0 +1,21 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+
+# Laravel / PHP
+backend/vendor/
+backend/storage/*.key
+backend/.phpunit.result.cache
+
+# Angular / Node
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# IDE y SO
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
