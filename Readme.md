@@ -6,16 +6,16 @@ Solución integral desarrollada para la **Prueba Técnica Fullstack — Infodec*
 
 ## 📌 Tabla de Contenidos
 
-* [Descripción del Proyecto](https://www.google.com/search?q=%23-descripci%C3%B3n-del-proyecto&utm_source=gemini)
-* [Stack Tecnológico](https://www.google.com/search?q=%23-stack-tecnol%C3%B3gico&utm_source=gemini)
-* [Arquitectura y Estructura del Repositorio](https://www.google.com/search?q=%23-arquitectura-y-estructura-del-repositorio&utm_source=gemini)
-* [Seguridad y Manejo de Tokens (JWT/JWE)](https://www.google.com/search?q=%23-seguridad-y-manejo-de-tokens-jwtjwe&utm_source=gemini)
-* [Almacenamiento del Token en el Frontend](https://www.google.com/search?q=%23-almacenamiento-del-token-en-el-frontend&utm_source=gemini)
-* [APIs Externas y Estrategia de Respaldo](https://www.google.com/search?q=%23-apis-externas-y-estrategia-de-respaldo&utm_source=gemini)
-* [Instalación y Configuración Paso a Paso](https://www.google.com/search?q=%23-instalaci%C3%B3n-y-configuraci%C3%B3n-paso-a-paso&utm_source=gemini)
-* [Ejecución de Pruebas Unitarias](https://www.google.com/search?q=%23-ejecuci%C3%B3n-de-pruebas-unitarias&utm_source=gemini)
-* [Colección de Postman](https://www.google.com/search?q=%23-colecci%C3%B3n-de-postman&utm_source=gemini)
-* [Evidencia en Video](https://www.google.com/search?q=%23-evidencia-en-video&utm_source=gemini)
+* [Descripción del Proyecto]
+* [Stack Tecnológico]
+* [Arquitectura y Estructura del Repositorio]
+* [Seguridad y Manejo de Tokens (JWT/JWE)]
+* [Almacenamiento del Token en el Frontend]
+* [APIs Externas y Estrategia de Respaldo]
+* [Instalación y Configuración Paso a Paso]
+* [Ejecución de Pruebas Unitarias]
+* [Colección de Postman]
+* [Evidencia en Video]
 
 ---
 
