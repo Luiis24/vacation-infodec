@@ -290,9 +290,9 @@ En la raíz de la carpeta `database/` o `docs/` encontrarás el archivo JSON con
 
 De acuerdo con las instrucciones de entrega:
 
-* 📹 **[Video 1: Demostración de la Aplicación en Funcionamiento](https://www.google.com)**
+* 📹 **[Video 1: Demostración de la Aplicación en Funcionamiento]([https://www.google.com](https://drive.google.com/file/d/1GPNQZWs4TMu3i_hsrCxztWNuSgPEzBwZ/view?usp=sharing))**
 
-* 📹 **[Video 2: Explicación Técnica de Código, Arquitectura y Tokens](https://www.google.com)**
+* 📹 **[Video 2: Explicación Técnica de Código, Arquitectura y Tokens](https://drive.google.com/file/d/1qYPMknYsDzGU8rN6kTVVrdiHnbt_ShHB/view?usp=sharing)**
 
 
 ---
