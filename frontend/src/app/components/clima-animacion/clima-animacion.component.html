@@ -1,0 +1,68 @@
+<div
+  class="clima-animacion"
+  [class.fullscreen]="fullscreen"
+  [ngClass]="claseFondo"
+>
+  <!-- Sol / Luna -->
+  <div class="astro" *ngIf="condicion === 'soleado' || condicion === 'calor' || momento === 'noche'">
+    <div
+      class="sol"
+      *ngIf="momento === 'dia'"
+      [class.calor]="condicion === 'calor'"
+    ></div>
+
+    <div class="luna" *ngIf="momento === 'noche'">
+      <div class="crater c1"></div>
+      <div class="crater c2"></div>
+      <div class="crater c3"></div>
+    </div>
+  </div>
+
+  <!-- Estrellas -->
+  <div class="estrellas" *ngIf="estrellas.length > 0">
+    <div
+      *ngFor="let e of estrellas"
+      class="estrella"
+      [style.left.%]="e.left"
+      [style.width.px]="e.size"
+      [style.height.px]="e.size"
+      [style.opacity]="e.opacity"
+      [style.animation-delay.s]="e.delay"
+      [style.animation-duration.s]="e.duration"
+    ></div>
+  </div>
+
+  <!-- Nubes -->
+  <div class="nubes" *ngIf="nubes.length > 0">
+    <div
+      *ngFor="let n of nubes"
+      class="nube"
+      [style.left.%]="n.left"
+      [style.width.px]="n.size"
+      [style.opacity]="n.opacity"
+      [style.animation-delay.s]="n.delay"
+      [style.animation-duration.s]="n.duration"
+    ></div>
+  </div>
+
+  <!-- Lluvia / Nieve -->
+  <div class="particulas" *ngIf="particulas.length > 0">
+    <div
+      *ngFor="let p of particulas"
+      class="particula"
+      [class.lluvia]="condicion === 'lluvia'"
+      [class.nieve]="condicion === 'nieve'"
+      [style.left.%]="p.left"
+      [style.width.px]="p.size"
+      [style.height.px]="condicion === 'lluvia' ? p.size * 6 : p.size"
+      [style.opacity]="p.opacity"
+      [style.animation-delay.s]="p.delay"
+      [style.animation-duration.s]="p.duration"
+    ></div>
+  </div>
+
+  <!-- Rayos de sol para calor -->
+  <div class="ondas-calor" *ngIf="condicion === 'calor' && momento === 'dia'">
+    <div class="onda" *ngFor="let i of [1,2,3,4,5]"></div>
+  </div>
+</div>

@@ -1,0 +1,143 @@
+<div class="auth-page">
+
+  <!-- Fondo animado (mismo concepto que login) -->
+  <div class="fondo-viaje">
+    <div class="cielo-gradiente"></div>
+    <div class="nube n1"></div>
+    <div class="nube n2"></div>
+    <div class="nube n3"></div>
+    <div class="nube n4"></div>
+    <div class="avion">🛫</div>
+    <div class="destino d1">🌍</div>
+    <div class="destino d2">🎒</div>
+    <div class="destino d3">🗺️</div>
+  </div>
+
+  <!-- Card principal -->
+  <div class="auth-container">
+    <div class="auth-card">
+
+      <!-- Header -->
+      <div class="auth-header">
+        <div class="auth-logo">
+          <span class="logo-icon">🎒</span>
+        </div>
+        <h1 class="auth-title">Crear Cuenta</h1>
+        <p class="auth-subtitle">Únete y empieza a planificar tus viajes</p>
+      </div>
+
+      <!-- Error -->
+      <div class="auth-alert" *ngIf="errorMessage">
+        <span class="alert-icon">⚠️</span>
+        <span class="alert-text">{{ errorMessage }}</span>
+      </div>
+
+      <!-- Formulario -->
+      <form (ngSubmit)="onRegister()" class="auth-form">
+
+        <!-- Nombre -->
+        <div class="form-group">
+          <label class="form-label" for="nombre">
+            <span class="label-icon">👤</span>
+            Nombre Completo
+          </label>
+          <input id="nombre" type="text" class="form-input" [(ngModel)]="nombre" name="nombre" required
+            autocomplete="name" placeholder="Juan Pérez" (input)="limpiarError()" />
+        </div>
+
+        <!-- Correo -->
+        <!-- Correo -->
+        <div class="form-group">
+          <label class="form-label" for="correo">
+            <span class="label-icon">📧</span>
+            Correo Electrónico
+          </label>
+          <input id="correo" type="email" class="form-input" [class.input-ok]="correoValido"
+            [class.input-error]="correoInvalido" [(ngModel)]="correo" name="correo" required autocomplete="email"
+            placeholder="ejemplo@infodec.com" (input)="limpiarError()" />
+
+          <!-- Feedback de correo -->
+          <div class="match-feedback" *ngIf="correoInvalido">
+            <span class="match-icon err">✕</span>
+            <span class="match-text err">
+              Ingresa un correo válido (ej: usuario&#64;dominio.com)
+            </span>
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-group">
+          <label class="form-label" for="password">
+            <span class="label-icon">🔒</span>
+            Contraseña
+          </label>
+          <div class="input-password-wrapper">
+            <input id="password" [type]="mostrarPassword ? 'text' : 'password'" class="form-input"
+              [(ngModel)]="password" name="password" required autocomplete="new-password"
+              placeholder="Mínimo 6 caracteres" (input)="limpiarError()" />
+            <button type="button" class="toggle-password" (click)="togglePassword()"
+              [attr.aria-label]="mostrarPassword ? 'Ocultar' : 'Mostrar'">
+              {{ mostrarPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirmar contraseña -->
+        <div class="form-group">
+          <label class="form-label" for="password_confirmation">
+            <span class="label-icon">🔐</span>
+            Confirmar Contraseña
+          </label>
+          <div class="input-password-wrapper">
+            <input id="password_confirmation" [type]="mostrarConfirm ? 'text' : 'password'" class="form-input"
+              [class.input-ok]="passwordsCoinciden" [class.input-error]="passwordsNoCoinciden"
+              [(ngModel)]="password_confirmation" name="password_confirmation" required autocomplete="new-password"
+              placeholder="Repite la contraseña" (input)="limpiarError()" />
+            <button type="button" class="toggle-password" (click)="toggleConfirm()"
+              [attr.aria-label]="mostrarConfirm ? 'Ocultar' : 'Mostrar'">
+              {{ mostrarConfirm ? '🙈' : '👁️' }}
+            </button>
+          </div>
+
+          <!-- Feedback de match -->
+          <div class="match-feedback" *ngIf="passwordsCoinciden">
+            <span class="match-icon ok">✓</span>
+            <span class="match-text ok">Las contraseñas coinciden</span>
+          </div>
+          <div class="match-feedback" *ngIf="passwordsNoCoinciden">
+            <span class="match-icon err">✕</span>
+            <span class="match-text err">Las contraseñas no coinciden</span>
+          </div>
+        </div>
+
+        <!-- Botón -->
+        <button type="submit" class="btn-primary" [disabled]="loading || passwordsNoCoinciden">
+          <span *ngIf="!loading" class="btn-content">
+            <span>Crear mi cuenta</span>
+            <span class="btn-arrow">→</span>
+          </span>
+          <span *ngIf="loading" class="btn-loading">
+            <span class="spinner"></span>
+            <span>Creando...</span>
+          </span>
+        </button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="auth-divider">
+        <span>o</span>
+      </div>
+
+      <!-- Link a login -->
+      <div class="auth-footer">
+        <span class="footer-text">¿Ya tienes cuenta?</span>
+        <a routerLink="/login" class="footer-link">
+          Inicia sesión
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>

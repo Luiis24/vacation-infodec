@@ -1,0 +1,120 @@
+<div class="auth-page">
+
+  <!-- Fondo animado -->
+  <div class="fondo-viaje">
+    <div class="cielo-gradiente"></div>
+    <div class="nube n1"></div>
+    <div class="nube n2"></div>
+    <div class="nube n3"></div>
+    <div class="nube n4"></div>
+    <div class="avion">✈️</div>
+    <div class="destino d1">🌍</div>
+    <div class="destino d2">🗺️</div>
+    <div class="destino d3">🧳</div>
+  </div>
+
+  <!-- Card principal -->
+  <div class="auth-container">
+    <div class="auth-card">
+
+      <!-- Logo + título -->
+      <div class="auth-header">
+        <div class="auth-logo">
+          <span class="logo-icon">✈️</span>
+        </div>
+        <h1 class="auth-title">Infodec Travel</h1>
+        <p class="auth-subtitle">Inicia sesión para planificar tu viaje</p>
+      </div>
+
+      <!-- Error -->
+      <div class="auth-alert" *ngIf="errorMessage">
+        <span class="alert-icon">⚠️</span>
+        <span class="alert-text">{{ errorMessage }}</span>
+      </div>
+
+      <!-- Formulario -->
+      <form (ngSubmit)="onLogin()" class="auth-form">
+
+        <!-- Correo -->
+        <div class="form-group">
+          <label class="form-label" for="correo">
+            <span class="label-icon">📧</span>
+            Correo Electrónico
+          </label>
+          <input
+            id="correo"
+            type="email"
+            class="form-input"
+            [(ngModel)]="correo"
+            name="correo"
+            required
+            autocomplete="email"
+            placeholder="ejemplo@infodec.com"
+            (input)="limpiarError()"
+          />
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-group">
+          <label class="form-label" for="password">
+            <span class="label-icon">🔒</span>
+            Contraseña
+          </label>
+          <div class="input-password-wrapper">
+            <input
+              id="password"
+              [type]="mostrarPassword ? 'text' : 'password'"
+              class="form-input"
+              [(ngModel)]="password"
+              name="password"
+              required
+              autocomplete="current-password"
+              placeholder="••••••••"
+              (input)="limpiarError()"
+            />
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="togglePassword()"
+              [attr.aria-label]="mostrarPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            >
+              {{ mostrarPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Botón submit -->
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="loading"
+        >
+          <span *ngIf="!loading" class="btn-content">
+            <span>Iniciar Sesión</span>
+            <span class="btn-arrow">→</span>
+          </span>
+          <span *ngIf="loading" class="btn-loading">
+            <span class="spinner"></span>
+            <span>Ingresando...</span>
+          </span>
+        </button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="auth-divider">
+        <span>o</span>
+      </div>
+
+      <!-- Link a registro -->
+      <div class="auth-footer">
+        <span class="footer-text">¿No tienes cuenta?</span>
+        <a routerLink="/register" class="footer-link">
+          Regístrate aquí
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>

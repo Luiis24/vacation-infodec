@@ -1,0 +1,328 @@
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar-app">
+  <div class="navbar-content">
+    <div class="brand">
+      <span class="brand-icon">✈️</span>
+      <span class="brand-text">Infodec Travel</span>
+    </div>
+
+    <div class="nav-actions">
+      <select
+        class="lang-select"
+        [(ngModel)]="idioma"
+        (change)="cambiarIdioma()"
+      >
+        <option value="es">🇪🇸 ES</option>
+        <option value="de">🇩🇪 DE</option>
+      </select>
+
+      <button class="btn-nav btn-historial" (click)="abrirHistorial()">
+        <span class="btn-icon">📋</span>
+        <span class="btn-label">{{ t('Historial', 'Verlauf') }}</span>
+      </button>
+
+      <button class="btn-nav btn-logout" (click)="logout()">
+        <span class="btn-icon">🚪</span>
+        <span class="btn-label">{{ t('Salir', 'Abmelden') }}</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ FONDO DINÁMICO (solo en paso 3) ============ -->
+<app-clima-animacion
+  *ngIf="paso === 3 && resultado && climaNumerico !== null"
+  [clima]="climaNumerico"
+  [longitud]="longitudCiudad"
+  [fullscreen]="true"
+></app-clima-animacion>
+
+<!-- ============ CONTENIDO ============ -->
+<main class="dashboard-main" [class.con-fondo]="paso === 3 && resultado">
+
+  <!-- STEPPER -->
+  <div class="stepper-wrapper" *ngIf="paso < 3 || !resultado">
+    <div class="stepper">
+      <div class="step" [class.active]="paso === 1" [class.done]="paso > 1">
+        <div class="step-circle">
+          <span *ngIf="paso <= 1">1</span>
+          <span *ngIf="paso > 1">✓</span>
+        </div>
+        <span class="step-label">{{ t('Destino', 'Reiseziel') }}</span>
+      </div>
+
+      <div class="step-line" [class.done]="paso > 1"></div>
+
+      <div class="step" [class.active]="paso === 2" [class.done]="paso > 2">
+        <div class="step-circle">
+          <span *ngIf="paso <= 2">2</span>
+          <span *ngIf="paso > 2">✓</span>
+        </div>
+        <span class="step-label">{{ t('Presupuesto', 'Budget') }}</span>
+      </div>
+
+      <div class="step-line" [class.done]="paso > 2"></div>
+
+      <div class="step" [class.active]="paso === 3">
+        <div class="step-circle">3</div>
+        <span class="step-label">{{ t('Resultado', 'Ergebnis') }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PASO 1: DESTINO ============ -->
+  <section class="wizard-card" *ngIf="paso === 1">
+    <header class="card-header">
+      <div class="card-icon">🌍</div>
+      <div>
+        <h2 class="card-title">
+          {{ t('Selecciona tu destino', 'Wählen Sie Ihr Reiseziel') }}
+        </h2>
+        <p class="card-subtitle">
+          {{ t('Elige un país y una ciudad para comenzar', 'Wählen Sie ein Land und eine Stadt') }}
+        </p>
+      </div>
+    </header>
+
+    <div class="card-body">
+      <!-- País -->
+      <div class="form-group">
+        <label class="form-label">
+          <span class="label-icon">🏴</span>
+          {{ t('País', 'Land') }}
+        </label>
+
+        <div class="select-wrapper">
+          <select
+            class="form-select"
+            [(ngModel)]="paisSeleccionado"
+            (change)="onPaisChange()"
+            [disabled]="cargandoPaises"
+          >
+            <option [ngValue]="null">
+              {{ cargandoPaises
+                  ? t('Cargando países...', 'Länder werden geladen...')
+                  : '-- ' + t('Selecciona un País', 'Land auswählen') + ' --' }}
+            </option>
+            <option *ngFor="let p of paises" [ngValue]="p">
+              {{ p.nombre }} · {{ p.moneda.simbolo }} {{ p.moneda.codigo }}
+            </option>
+          </select>
+          <span class="select-arrow">▾</span>
+        </div>
+      </div>
+
+      <!-- Ciudad -->
+      <div class="form-group" *ngIf="paisSeleccionado">
+        <label class="form-label">
+          <span class="label-icon">🏙️</span>
+          {{ t('Ciudad', 'Stadt') }}
+        </label>
+
+        <div class="select-wrapper">
+          <select
+            class="form-select"
+            [(ngModel)]="ciudadSeleccionada"
+            [disabled]="cargandoCiudades || ciudades.length === 0"
+          >
+            <option [ngValue]="null">
+              {{ cargandoCiudades
+                  ? t('Cargando ciudades...', 'Städte werden geladen...')
+                  : '-- ' + t('Selecciona una Ciudad', 'Stadt auswählen') + ' --' }}
+            </option>
+            <option *ngFor="let c of ciudades" [ngValue]="c">
+              {{ c.nombre }}
+            </option>
+          </select>
+          <span class="select-arrow">▾</span>
+        </div>
+      </div>
+    </div>
+
+    <footer class="card-footer">
+      <button
+        class="btn-primary"
+        [disabled]="!ciudadSeleccionada"
+        (click)="irAPaso(2)"
+      >
+        <span>{{ t('Siguiente', 'Weiter') }}</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </footer>
+  </section>
+
+  <!-- ============ PASO 2: PRESUPUESTO ============ -->
+  <section class="wizard-card" *ngIf="paso === 2">
+    <header class="card-header">
+      <div class="card-icon">💰</div>
+      <div>
+        <h2 class="card-title">
+          {{ t('Define tu presupuesto', 'Definieren Sie Ihr Budget') }}
+        </h2>
+        <p class="card-subtitle">
+          {{ ciudadSeleccionada?.nombre }} · {{ paisSeleccionado?.nombre }}
+        </p>
+      </div>
+    </header>
+
+    <div class="card-body">
+      <div class="form-group">
+        <label class="form-label">
+          <span class="label-icon">💵</span>
+          {{ t('Presupuesto en Pesos Colombianos', 'Budget in Kolumbianischen Pesos') }}
+        </label>
+
+        <div class="input-money">
+          <span class="money-prefix">$</span>
+          <input
+            type="number"
+            class="form-input-money"
+            [(ngModel)]="presupuesto"
+            placeholder="5.000.000"
+            min="1"
+            step="1000"
+          />
+          <span class="money-suffix">COP</span>
+        </div>
+
+        <p class="input-hint" *ngIf="presupuesto && presupuesto > 0">
+          {{ formatearCOP(presupuesto) }} COP
+        </p>
+      </div>
+
+      <!-- Errores -->
+      <div class="alerta-error" *ngIf="errorConsulta">
+        <span class="alert-icon">⚠️</span>
+        <span>{{ errorConsulta }}</span>
+      </div>
+    </div>
+
+    <footer class="card-footer footer-doble">
+      <button class="btn-secondary" (click)="irAPaso(1)" [disabled]="enviando">
+        <span class="btn-arrow-rev">←</span>
+        <span>{{ t('Atrás', 'Zurück') }}</span>
+      </button>
+
+      <button
+        class="btn-primary"
+        [disabled]="!presupuesto || presupuesto <= 0 || enviando"
+        (click)="consultar()"
+      >
+        <span *ngIf="!enviando" class="btn-content">
+          <span>{{ t('Consultar Viaje', 'Reise abfragen') }}</span>
+          <span class="btn-arrow">🚀</span>
+        </span>
+        <span *ngIf="enviando" class="btn-loading">
+          <span class="spinner"></span>
+          <span>{{ t('Consultando...', 'Wird geladen...') }}</span>
+        </span>
+      </button>
+    </footer>
+  </section>
+
+  <!-- ============ PASO 3: RESULTADO ============ -->
+  <section class="resultado-wrapper" *ngIf="paso === 3 && resultado">
+
+    <!-- Chip destino + botón nueva consulta -->
+    <div class="resultado-topbar">
+      <div class="destino-chip">
+        <span class="chip-icon">📍</span>
+        <span class="chip-texto">
+          {{ resultado.ciudad }}, {{ resultado.pais }}
+        </span>
+      </div>
+
+      <button class="btn-nueva-consulta" (click)="irAPaso(1)">
+        <span>🔄</span>
+        <span>{{ t('Nueva Consulta', 'Neue Suche') }}</span>
+      </button>
+    </div>
+
+    <!-- Grid de resultados -->
+    <div class="resultado-grid">
+
+      <!-- Clima -->
+      <div class="resultado-card clima-card">
+        <div class="card-mini-header">
+          <span class="mini-icon">🌡️</span>
+          <span class="mini-title">{{ t('Clima Actual', 'Aktuelles Wetter') }}</span>
+        </div>
+
+        <div class="clima-valor">
+          {{ resultado.clima_celsius }}
+        </div>
+
+        <div class="clima-descripcion">
+          {{
+            climaNumerico !== null && climaNumerico <= 10
+              ? t('Frío, lleva abrigo', 'Kalt, nimm eine Jacke mit')
+              : climaNumerico !== null && climaNumerico <= 18
+                ? t('Templado, agradable', 'Mild, angenehm')
+                : climaNumerico !== null && climaNumerico <= 28
+                  ? t('Cálido y soleado', 'Warm und sonnig')
+                  : t('Caluroso, hidrátate', 'Heiß, trinke Wasser')
+          }}
+        </div>
+      </div>
+
+      <!-- Conversión + Personaje -->
+      <div class="resultado-card conversion-card">
+        <div class="card-mini-header">
+          <span class="mini-icon">💱</span>
+          <span class="mini-title">{{ t('Conversión', 'Umrechnung') }}</span>
+        </div>
+
+        <div class="conversion-body">
+
+          <app-personaje-divisas
+            [nivel]="nivelDivisa"
+            [textoEs]="textoPersonaje.es"
+            [textoDe]="textoPersonaje.de"
+          ></app-personaje-divisas>
+
+          <div class="conversion-detalles">
+            <div class="detalle-row">
+              <span class="detalle-label">{{ t('Presupuesto', 'Budget') }}</span>
+              <span class="detalle-valor">
+                ${{ formatearCOP(resultado.presupuesto_cop) }}
+              </span>
+            </div>
+
+            <div class="detalle-row destacado">
+              <span class="detalle-label">{{ t('Recibirás', 'Sie erhalten') }}</span>
+              <span class="detalle-valor grande">
+                {{ resultado.simbolo }}{{ formatearConvertido(resultado.valor_convertido) }}
+              </span>
+            </div>
+
+            <div class="detalle-row">
+              <span class="detalle-label">{{ t('Moneda', 'Währung') }}</span>
+              <span class="detalle-valor">
+                {{ resultado.moneda }}
+              </span>
+            </div>
+
+            <div class="detalle-row small">
+              <span class="detalle-label">{{ t('Tasa', 'Kurs') }}</span>
+              <span class="detalle-valor mono">
+                {{ resultado.tasa_aplicada }}
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ MODAL HISTORIAL ============ -->
+<app-historial-modal
+  [visible]="verHistorialModal"
+  [idioma]="idioma"
+  [historial]="historialList"
+  [cargando]="cargandoHistorial"
+  (cerrar)="verHistorialModal = false"
+></app-historial-modal>

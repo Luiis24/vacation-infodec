@@ -1,0 +1,140 @@
+.personaje-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  max-width: 240px;
+  margin: 0 auto;
+  padding: 8px;
+}
+
+.personaje-svg {
+  width: 100%;
+  height: auto;
+  max-width: 200px;
+  filter: drop-shadow(0 8px 14px rgba(0,0,0,0.15));
+  transition: transform 0.4s ease;
+}
+
+/* ============ ANIMACIONES POR ESTADO ============ */
+
+/* Eufórico: saltando + rotación ligera */
+.personaje-eufórico .personaje-svg {
+  animation: saltarEufórico 0.9s ease-in-out infinite;
+}
+
+@keyframes saltarEufórico {
+  0%, 100% { transform: translateY(0)     rotate(-3deg) scale(1); }
+  25%      { transform: translateY(-12px) rotate(3deg)  scale(1.04); }
+  50%      { transform: translateY(-18px) rotate(0deg)  scale(1.06); }
+  75%      { transform: translateY(-10px) rotate(-2deg) scale(1.03); }
+}
+
+/* Feliz: rebote suave */
+.personaje-feliz .personaje-svg {
+  animation: reboteFeliz 2s ease-in-out infinite;
+}
+
+@keyframes reboteFeliz {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* Neutral: respiración leve */
+.personaje-neutral .personaje-svg {
+  animation: respirar 3s ease-in-out infinite;
+}
+
+@keyframes respirar {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.02); }
+}
+
+/* Preocupado: temblor suave */
+.personaje-preocupado .personaje-svg {
+  animation: temblar 0.6s ease-in-out infinite;
+}
+
+@keyframes temblar {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  25%      { transform: translateX(-2px) rotate(-1deg); }
+  75%      { transform: translateX(2px)  rotate(1deg); }
+}
+
+/* Devastado: desplome + temblor */
+.personaje-devastado .personaje-svg {
+  animation: desplome 1.4s ease-in-out infinite;
+}
+
+@keyframes desplome {
+  0%, 100% { transform: translateY(0)    rotate(0); }
+  50%      { transform: translateY(6px)  rotate(4deg); }
+}
+
+/* ============ MONEDAS FLOTANTES ============ */
+.monedas-flotantes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.moneda {
+  position: absolute;
+  font-size: 26px;
+  animation: flotarMoneda 2.4s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.moneda.m1 { top: 6%;  left: 6%;  animation-delay: 0s;   }
+.moneda.m2 { top: 12%; right: 4%; animation-delay: 0.6s; font-size: 32px; }
+.moneda.m3 { top: 22%; left: 12%; animation-delay: 1.2s; font-size: 20px; }
+
+@keyframes flotarMoneda {
+  0%, 100% { transform: translateY(0)    rotate(-8deg); opacity: 0.85; }
+  50%      { transform: translateY(-14px) rotate(8deg);  opacity: 1; }
+}
+
+/* ============ BILLETES ROTOS ============ */
+.billetes-rotos {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.billete {
+  position: absolute;
+  font-size: 24px;
+  animation: caerBillete 1.8s ease-in-out infinite;
+  opacity: 0.7;
+}
+
+.billete.b1 { top: 0%;  left: 15%; animation-delay: 0s;   }
+.billete.b2 { top: -5%; right: 20%; animation-delay: 0.7s; font-size: 30px; }
+.billete.b3 { top: 5%;  left: 65%; animation-delay: 1.3s; }
+
+@keyframes caerBillete {
+  0%   { transform: translateY(-20px) rotate(0);   opacity: 0; }
+  30%  { opacity: 0.9; }
+  100% { transform: translateY(180px) rotate(25deg); opacity: 0; }
+}
+
+/* ============ TEXTO ============ */
+.texto-estado {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4a5568;
+  line-height: 1.3;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 480px) {
+  .personaje-svg { max-width: 140px; }
+  .moneda.m2 { font-size: 24px; }
+  .texto-estado { font-size: 0.8rem; }
+}

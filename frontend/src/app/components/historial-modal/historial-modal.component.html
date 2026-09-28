@@ -1,0 +1,186 @@
+<div
+  class="modal-backdrop"
+  *ngIf="visible"
+  (click)="onBackdropClick($event)"
+>
+  <div class="modal-card" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="header-left">
+        <div class="header-icon">📋</div>
+        <div>
+          <h2 class="modal-title">
+            {{ t('Últimas Consultas', 'Letzte Abfragen') }}
+          </h2>
+          <p class="modal-subtitle">
+            {{ t('Historial de viajes consultados', 'Verlauf der Reiseanfragen') }}
+          </p>
+        </div>
+      </div>
+
+      <button
+        class="btn-close"
+        (click)="cerrar.emit()"
+        [attr.aria-label]="t('Cerrar', 'Schließen')"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+
+      <!-- Loading -->
+      <div class="estado-cargando" *ngIf="cargando">
+        <div class="spinner-grande"></div>
+        <p>{{ t('Cargando historial...', 'Verlauf wird geladen...') }}</p>
+      </div>
+
+      <!-- Vacío -->
+      <div class="estado-vacio" *ngIf="!cargando && historial.length === 0">
+        <div class="vacio-icon">🗂️</div>
+        <h3>{{ t('Sin consultas aún', 'Noch keine Anfragen') }}</h3>
+        <p>
+          {{ t(
+            'Cuando consultes un destino, aparecerá aquí.',
+            'Wenn Sie ein Reiseziel abfragen, erscheint es hier.'
+          ) }}
+        </p>
+      </div>
+
+      <!-- Tabla desktop / Tarjetas móvil -->
+      <div class="tabla-wrapper" *ngIf="!cargando && historial.length > 0">
+
+        <!-- Desktop -->
+        <table class="tabla-historial">
+          <thead>
+            <tr>
+              <th>{{ t('Destino', 'Reiseziel') }}</th>
+              <th>{{ t('Presupuesto', 'Budget') }}</th>
+              <th>{{ t('Convertido', 'Konvertiert') }}</th>
+              <th>{{ t('Clima', 'Wetter') }}</th>
+              <th>{{ t('Fecha', 'Datum') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let h of historial; let i = index"
+                [style.animation-delay.ms]="i * 60">
+              <td>
+                <div class="celda-destino">
+                  <span class="destino-bandera">🌍</span>
+                  <div>
+                    <div class="destino-ciudad">
+                      {{ h.ciudad?.nombre || '—' }}
+                    </div>
+                    <div class="destino-pais">
+                      {{ h.ciudad?.pais?.nombre || '' }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <span class="badge-cop">
+                  $ {{ formatearCOP(h.presupuesto_cop) }} COP
+                </span>
+              </td>
+
+              <td>
+                <div class="celda-convertido">
+                  <span class="simbolo-moneda">
+                    {{ h.ciudad?.pais?.moneda?.simbolo || '' }}
+                  </span>
+                  <span class="valor-convertido">
+                    {{ formatearConvertido(h.valor_convertido) }}
+                  </span>
+                  <span class="codigo-moneda">
+                    {{ h.ciudad?.pais?.moneda?.codigo || '' }}
+                  </span>
+                </div>
+              </td>
+
+              <td>
+                <span
+                  class="badge-clima"
+                  [class.frio]="esFrio(h.clima)"
+                  [class.caluroso]="esCaluroso(h.clima)"
+                >
+                  {{ iconoClima(h.clima) }}
+                  {{ h.clima | number:'1.1-1' }}°C
+                </span>
+              </td>
+
+              <td>
+                <span class="fecha-texto">
+                  {{ formatearFecha(h.fecha) }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Móvil (tarjetas) -->
+        <div class="tarjetas-movil">
+          <div class="tarjeta-item" *ngFor="let h of historial; let i = index"
+               [style.animation-delay.ms]="i * 80">
+
+            <div class="tarjeta-header">
+              <span class="tarjeta-destino">
+                🌍 {{ h.ciudad?.nombre || '—' }}
+              </span>
+              <span
+                class="badge-clima"
+                [class.frio]="esFrio(h.clima)"
+                [class.caluroso]="esCaluroso(h.clima)"
+              >
+                {{ iconoClima(h.clima) }}
+                {{ h.clima | number:'1.1-1' }}°C
+              </span>
+            </div>
+
+            <div class="tarjeta-pais">
+              {{ h.ciudad?.pais?.nombre || '' }}
+            </div>
+
+            <div class="tarjeta-info">
+              <div class="info-item">
+                <span class="info-label">
+                  {{ t('Presupuesto', 'Budget') }}
+                </span>
+                <span class="info-valor">
+                  $ {{ formatearCOP(h.presupuesto_cop) }}
+                </span>
+              </div>
+
+              <div class="info-item">
+                <span class="info-label">
+                  {{ t('Convertido', 'Konvertiert') }}
+                </span>
+                <span class="info-valor destacado">
+                  {{ h.ciudad?.pais?.moneda?.simbolo || '' }}
+                  {{ formatearConvertido(h.valor_convertido) }}
+                  {{ h.ciudad?.pais?.moneda?.codigo || '' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="tarjeta-fecha">
+              🕒 {{ formatearFecha(h.fecha) }}
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn-cerrar" (click)="cerrar.emit()">
+        {{ t('Cerrar', 'Schließen') }}
+      </button>
+    </div>
+
+  </div>
+</div>

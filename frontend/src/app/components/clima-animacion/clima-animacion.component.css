@@ -1,0 +1,230 @@
+.clima-animacion {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  transition: background 1.2s ease;
+}
+
+.clima-animacion.fullscreen {
+  position: fixed;
+}
+
+/* ============ FONDOS ============ */
+.fondo.dia.soleado    { background: linear-gradient(180deg, #6ec6ff 0%, #b8e2ff 60%, #ffe9b0 100%); }
+.fondo.dia.calor      { background: linear-gradient(180deg, #ffb347 0%, #ffd97a 50%, #ffefb8 100%); }
+.fondo.dia.nublado    { background: linear-gradient(180deg, #a8b8c8 0%, #c9d4dd 60%, #e0e6ec 100%); }
+.fondo.dia.lluvia     { background: linear-gradient(180deg, #4a5a6a 0%, #6b7a8a 60%, #96a3b0 100%); }
+.fondo.dia.nieve      { background: linear-gradient(180deg, #b6c8d9 0%, #d7e2ec 60%, #eef4f9 100%); }
+
+.fondo.noche.soleado  { background: linear-gradient(180deg, #0b1a33 0%, #1b2c4a 60%, #2f4568 100%); }
+.fondo.noche.calor    { background: linear-gradient(180deg, #2a0f1a 0%, #3f1a2b 60%, #5c2a3f 100%); }
+.fondo.noche.nublado  { background: linear-gradient(180deg, #101820 0%, #1c2733 60%, #2e3a48 100%); }
+.fondo.noche.lluvia   { background: linear-gradient(180deg, #050a12 0%, #0e1a26 60%, #1c2a3a 100%); }
+.fondo.noche.nieve    { background: linear-gradient(180deg, #0d1622 0%, #1d2a3a 60%, #2e3f52 100%); }
+
+/* ============ SOL ============ */
+.astro {
+  position: absolute;
+  top: 12%;
+  right: 12%;
+  z-index: 2;
+}
+
+.sol {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff5b8, #ffd23f 55%, #f5a623 100%);
+  box-shadow:
+    0 0 40px rgba(255, 210, 63, 0.8),
+    0 0 90px rgba(255, 180, 50, 0.55),
+    0 0 160px rgba(255, 150, 30, 0.35);
+  animation: pulsarSol 4s ease-in-out infinite;
+}
+
+.sol.calor {
+  width: 130px;
+  height: 130px;
+  background: radial-gradient(circle at 35% 35%, #fff0a0, #ff9b2b 55%, #e35e00 100%);
+  box-shadow:
+    0 0 60px rgba(255, 155, 43, 0.9),
+    0 0 130px rgba(230, 90, 0, 0.6),
+    0 0 220px rgba(200, 60, 0, 0.4);
+  animation: pulsarSol 2.5s ease-in-out infinite;
+}
+
+@keyframes pulsarSol {
+  0%, 100% { transform: scale(1);    filter: brightness(1); }
+  50%      { transform: scale(1.06); filter: brightness(1.15); }
+}
+
+/* ============ LUNA ============ */
+.luna {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff, #d8d8e8 60%, #b0b0c0 100%);
+  box-shadow:
+    0 0 30px rgba(220, 220, 255, 0.7),
+    0 0 80px rgba(180, 180, 255, 0.4);
+  animation: flotarLuna 6s ease-in-out infinite;
+}
+
+.crater {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(140, 140, 160, 0.5);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+.crater.c1 { width: 18px; height: 18px; top: 22%; left: 30%; }
+.crater.c2 { width: 12px; height: 12px; top: 55%; left: 55%; }
+.crater.c3 { width: 9px;  height: 9px;  top: 40%; left: 65%; }
+
+@keyframes flotarLuna {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* ============ ESTRELLAS ============ */
+.estrellas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.estrella {
+  position: absolute;
+  top: 0;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+  animation-name: titilar;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes titilar {
+  0%, 100% { transform: scale(1);   opacity: 0.3; }
+  50%      { transform: scale(1.4); opacity: 1; }
+}
+
+.estrella:nth-child(odd)  { top: 5%; }
+.estrella:nth-child(even) { top: 15%; }
+.estrella:nth-child(3n)   { top: 25%; }
+.estrella:nth-child(4n)   { top: 35%; }
+.estrella:nth-child(5n)   { top: 45%; }
+
+/* ============ NUBES ============ */
+.nubes {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.nube {
+  position: absolute;
+  top: 10%;
+  height: 60px;
+  background: #ffffff;
+  border-radius: 100px;
+  filter: blur(1px);
+  animation-name: moverNube;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.nube::before,
+.nube::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.nube::before {
+  width: 60%; height: 130%;
+  top: -50%; left: 10%;
+}
+
+.nube::after {
+  width: 45%; height: 110%;
+  top: -35%; right: 12%;
+}
+
+@keyframes moverNube {
+  from { transform: translateX(0); }
+  to   { transform: translateX(140vw); }
+}
+
+/* ============ LLUVIA / NIEVE ============ */
+.particulas {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.particula {
+  position: absolute;
+  top: -10%;
+  border-radius: 50%;
+  animation-name: caer;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.particula.lluvia {
+  background: linear-gradient(180deg, rgba(200,220,255,0), rgba(200,220,255,0.9));
+  border-radius: 10px;
+  filter: blur(0.5px);
+}
+
+.particula.nieve {
+  background: #ffffff;
+  box-shadow: 0 0 6px rgba(255,255,255,0.9);
+}
+
+@keyframes caer {
+  0%   { transform: translateY(0)     translateX(0); }
+  100% { transform: translateY(110vh) translateX(20px); }
+}
+
+/* ============ ONDAS DE CALOR ============ */
+.ondas-calor {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.onda {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 20%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center bottom, rgba(255,255,255,0.15), transparent 70%);
+  animation: ondular 3s ease-in-out infinite;
+}
+
+.onda:nth-child(1) { animation-delay: 0s;   bottom: 0%; }
+.onda:nth-child(2) { animation-delay: 0.4s; bottom: 4%; }
+.onda:nth-child(3) { animation-delay: 0.8s; bottom: 8%; }
+.onda:nth-child(4) { animation-delay: 1.2s; bottom: 12%; }
+.onda:nth-child(5) { animation-delay: 1.6s; bottom: 16%; }
+
+@keyframes ondular {
+  0%, 100% { transform: translateY(0);     opacity: 0.4; }
+  50%      { transform: translateY(-14px); opacity: 0.7; }
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+  .sol   { width: 80px;  height: 80px; }
+  .sol.calor { width: 95px; height: 95px; }
+  .luna  { width: 65px;  height: 65px; }
+  .astro { top: 8%; right: 8%; }
+}
